@@ -6,8 +6,12 @@ export class DataSource<T> implements Subscribeable<T> {
     readonly key: string
 
     private initial: T
+
     private _value: T
     public value() { return this._value }
+
+    private _markedValue: T
+    public markedValue() { return this._markedValue || 0 }
 
     private sub = new Subscription<T>()
 
@@ -43,7 +47,18 @@ export class DataSource<T> implements Subscribeable<T> {
         return false
     }
 
+    public mark() {
+        this._markedValue = this._value
+        this.notify(this._value)
+    }
+
+    public unmark() {
+        this._markedValue = null
+        this.notify(this._value)
+    }
+
     public reset() {
+        this.unmark()
         this.setValue(this.initial)
     }
 

@@ -8,8 +8,6 @@ import {StateChange} from "../../../State/StateChange";
 
 const {ccclass} = cc._decorator;
 
-@ccclass
-@menu("Stencil/Active/Gates/StateGate")
 export default abstract class StateGate<T> extends ActiveGate implements Keyable {
 
     @property key: string = ""
@@ -17,7 +15,7 @@ export default abstract class StateGate<T> extends ActiveGate implements Keyable
     @property revertOnExit: boolean = false
     @property takeStateOnActive: boolean = false
 
-    abstract states: T[]
+    abstract states: T[] = []
 
     public machine: StateMachine<T>
 
@@ -56,7 +54,7 @@ export default abstract class StateGate<T> extends ActiveGate implements Keyable
     }
 
     private onState(change: StateChange<T>) {
-        if (change.oldValue && this.states.includes(this.getState()))
+        if (change.oldValue && this.states && this.states.includes(this.getState()))
             this.revertState = change.oldValue
         this.requestCheck()
     }

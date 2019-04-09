@@ -1,10 +1,12 @@
 import menu = cc._decorator.menu;
 import property = cc._decorator.property;
 import {RegisterableComponent} from "../Lifecycle/RegisterableComponent";
+import executionOrder = cc._decorator.executionOrder;
 
 const {ccclass} = cc._decorator;
 
 @ccclass
+@executionOrder(-100)
 @menu("Stencil/Active/ActiveEventSystem")
 export default class ActiveEventSystem extends cc.Component {
 

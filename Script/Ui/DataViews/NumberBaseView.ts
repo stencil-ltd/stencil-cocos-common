@@ -6,18 +6,15 @@ import value = cc.js.value;
 export abstract class NumberBaseView extends DataView<number> {
 
     @property
-    markFromStart: boolean = false
-
-    private startValue: number = 0
+    useMarkedValue: boolean = false
 
     protected onInitialize() {
         super.onInitialize()
-        this.startValue = this.source.value()
     }
 
     value(): number {
         let retval = super.value()!!
-        if (this.markFromStart) retval -= this.startValue
+        if (this.useMarkedValue) retval -= this.source.markedValue()
         return retval
     }
 }

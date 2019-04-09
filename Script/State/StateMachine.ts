@@ -61,9 +61,10 @@ export default class StateMachine<T> implements Subscribeable<T>, Lockable, Keya
     }
 
     reset() {
+        console.log(`machine '${this.key}' reset`)
         if (this.isLocked()) return
-        this.requestState(this.initialState, true)
         this.history.length = 0
+        this.requestState(this.initialState, true)
     }
 
     subscribe(owner: any, fn: (T) => void) {

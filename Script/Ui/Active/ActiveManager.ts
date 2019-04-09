@@ -31,13 +31,13 @@ export default class ActiveManager extends RegisterableComponent {
     }
 
     willUnregister() {
-        this.gates.forEach(value => value.onUnregister())
+        if (this.gates) this.gates.forEach(value => value.onUnregister())
         super.willUnregister();
     }
 
     didUnregister() {
         super.didUnregister();
-        this.gates.forEach(value => value.didUnregister())
+        if (this.gates) this.gates.forEach(value => value.didUnregister())
     }
 
     check() {
