@@ -8,7 +8,7 @@ const {ccclass} = cc._decorator;
 @menu("Stencil/Data/NumberView")
 export class NumberView extends NumberBaseView {
 
-    private label: Label
+    private label: Label = null
 
     start() {
         this.label = this.node.getComponent(cc.Label)

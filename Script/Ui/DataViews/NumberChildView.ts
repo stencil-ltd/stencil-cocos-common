@@ -1,4 +1,3 @@
-import DataView from "./DataView"
 import menu = cc._decorator.menu;
 import {NumberBaseView} from "./NumberBaseView";
 
