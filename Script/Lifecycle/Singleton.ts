@@ -14,5 +14,8 @@ export default abstract class Singleton extends cc.Component {
         cc.log(`Singleton: No existing instance of ${this.constructor.name}. Initializing.`)
         Singleton.map.set(this.constructor, this)
         cc.game.addPersistRootNode(this.node)
+        this.onSingletonLoad()
     }
+
+    protected onSingletonLoad() {}
 }
