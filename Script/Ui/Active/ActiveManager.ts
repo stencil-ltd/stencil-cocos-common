@@ -19,7 +19,6 @@ export default class ActiveManager extends RegisterableComponent {
     public readonly gates: ActiveGate[] = []
 
     onRegister() {
-        if (this.isRegistered) return
         super.onRegister()
         this.gates.push(...this.getComponents(ActiveGate))
         this.gates.forEach(value => value.register(this))
@@ -30,14 +29,9 @@ export default class ActiveManager extends RegisterableComponent {
         this.check()
     }
 
-    willUnregister() {
+    onUnregister() {
         if (this.gates) this.gates.forEach(value => value.onUnregister())
-        super.willUnregister();
-    }
-
-    didUnregister() {
-        super.didUnregister();
-        if (this.gates) this.gates.forEach(value => value.didUnregister())
+        super.onUnregister();
     }
 
     check() {

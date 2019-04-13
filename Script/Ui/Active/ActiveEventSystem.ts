@@ -28,7 +28,6 @@ export default class ActiveEventSystem extends cc.Component {
                 value.onRegister()
                 registered.push(value)
             }
-            value.isRegistered = true
         })
 
         registered.forEach(value => {
@@ -38,13 +37,7 @@ export default class ActiveEventSystem extends cc.Component {
 
     protected onDestroy(): void {
         this.components.forEach(value => {
-            if (value.isRegistered)
-                value.willUnregister()
-        })
-        this.components.forEach(value => {
-            if (value.isRegistered)
-                value.didUnregister()
-            value.isUnregistered = true
+            if (value.isRegistered) value.onUnregister()
         })
     }
 }

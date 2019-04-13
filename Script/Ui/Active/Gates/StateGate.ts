@@ -5,6 +5,7 @@ import ActiveManager from "../ActiveManager";
 import {Keyable} from "../../../Foundation/Keyable";
 import StateMachine from "../../../State/StateMachine";
 import {StateChange} from "../../../State/StateChange";
+import Widget = cc.Widget;
 
 const {ccclass} = cc._decorator;
 

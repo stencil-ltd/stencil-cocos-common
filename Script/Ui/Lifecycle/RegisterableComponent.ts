@@ -1,10 +1,19 @@
+import value = cc.js.value;
+
 export abstract class RegisterableComponent extends cc.Component {
 
     public isRegistered: boolean = false
-    public isUnregistered: boolean = false
 
-    public onRegister() {}
+    public onRegister() {
+        this.isRegistered = true
+    }
     public didRegister() {}
-    public willUnregister() {}
-    public didUnregister() {}
+
+    public onUnregister() {
+        this.isRegistered = false
+    }
+
+    protected onDestroy(): void {
+        if (this.isRegistered) this.onUnregister()
+    }
 }
