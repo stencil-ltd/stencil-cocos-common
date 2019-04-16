@@ -4,8 +4,10 @@ import Font = cc.Font;
 import {StencilFont} from "./StencilFont";
 import ccclass = cc._decorator.ccclass;
 import menu = cc._decorator.menu;
+import executeInEditMode = cc._decorator.executeInEditMode;
 
 @ccclass
+@executeInEditMode()
 @menu('Stencil/Text/Font Settings')
 export default class StencilFonts extends Singleton {
 
