@@ -1,4 +1,5 @@
 import ProductListener = Stencil.Purchasing.ProductListener;
+import Product = Stencil.Purchasing.Product;
 
 export class StencilIap {
 
@@ -26,6 +27,26 @@ export class StencilIap {
         // @ts-ignore
         sdkbox.IAP.init()
         console.log(`StencilIap configured.`)
+
+        console.log(`Attempting to refresh IAP listings...`)
+        sdkbox.IAP.refresh()
+    }
+
+    public static purchase(id: string) {
+        if (!this.isAvailable()) {
+            console.log(`StencilIap Not Available`)
+            return
+        }
+        console.log(`Attempt purchase: ${id}`)
+        return sdkbox.IAP.purchase(id)
+    }
+
+    public static getProducts(): Product[] {
+        if (!this.isAvailable()) {
+            console.log(`StencilIap Not Available`)
+            return []
+        }
+        return sdkbox.IAP.getProducts() as Product[]
     }
 
 }
