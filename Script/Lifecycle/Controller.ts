@@ -25,8 +25,8 @@ export default abstract class Controller extends RegisterableComponent {
         this.setInstance()
     }
 
-    didUnregister() {
-        super.didUnregister();
+    onUnregister() {
+        super.onUnregister();
         this.clearInstance()
     }
 
