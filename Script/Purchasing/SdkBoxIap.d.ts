@@ -2,7 +2,7 @@
  * Quick wrapper for the incomplete typings in:
  * {@link sdkbox.IAPListener}
  */
-namespace Stencil.Purchasing {
+export namespace Stencil.Purchasing {
 
     /**
      * Represents a product listing.

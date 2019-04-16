@@ -6,7 +6,7 @@ export abstract class StateButton<T> extends cc.Component {
     @property()
     public key: string = ''
 
-    public abstract state: T
+    public abstract state: T = 0 as unknown as T
 
     protected onLoad(): void {
         this.node.on('click', this.onClick, this)
