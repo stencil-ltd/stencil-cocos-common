@@ -1,5 +1,6 @@
 import {Stencil} from "./SdkBoxIap";
 import ProductListener = Stencil.Purchasing.ProductListener;
+import Product = Stencil.Purchasing.Product;
 
 class ListenWrapper implements ProductListener {
 
@@ -14,17 +15,17 @@ class ListenWrapper implements ProductListener {
             this.inner.onInitialized(success)
     }
 
-    onCanceled(p: Stencil.Purchasing.Product) {
+    onCanceled(p: Product) {
         if (this.inner.onCanceled)
             this.inner.onCanceled(p)
     }
 
-    onConsumed(p: Stencil.Purchasing.Product, error: string) {
+    onConsumed(p: Product, error: string) {
         if (this.inner.onConsumed)
             this.inner.onConsumed(p, error)
     }
 
-    onFailure(p: Stencil.Purchasing.Product, msg: string) {
+    onFailure(p: Product, msg: string) {
         if (this.inner.onFailure)
             this.inner.onFailure(p, msg)
     }
@@ -34,7 +35,7 @@ class ListenWrapper implements ProductListener {
             this.inner.onProductRequestFailure(msg)
     }
 
-    onProductRequestSuccess(products: Stencil.Purchasing.Product[]) {
+    onProductRequestSuccess(products: Product[]) {
         if (this.inner.onProductRequestSuccess)
             this.inner.onProductRequestSuccess(products)
     }
@@ -44,12 +45,12 @@ class ListenWrapper implements ProductListener {
             this.inner.onRestoreComplete(ok, msg)
     }
 
-    onRestored(p: Stencil.Purchasing.Product) {
+    onRestored(p: Product) {
         if (this.inner.onRestored)
             this.inner.onRestored(p)
     }
 
-    onSuccess(p: Stencil.Purchasing.Product) {
+    onSuccess(p: Product) {
         if (this.inner.onSuccess)
             this.inner.onSuccess(p)
     }

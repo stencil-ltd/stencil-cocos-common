@@ -35,6 +35,8 @@ export default class StencilLabel extends cc.Component {
 
     private refresh() {
         const font = StencilFonts.instance().getFont(this.font)
+        if (font == this._label.font) return
+        
         this._label.isSystemFontUsed = false
         this._label.font = font
         console.log(`[${this.node.name}]: Setting font to ${font.name}`)
