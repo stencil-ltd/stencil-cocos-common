@@ -1,6 +1,4 @@
 import menu = cc._decorator.menu;
-import requireComponent = cc._decorator.requireComponent;
-import Button = cc.Button;
 import property = cc._decorator.property;
 
 const {ccclass} = cc._decorator;
