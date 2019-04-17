@@ -1,5 +1,8 @@
 import {RegisterableComponent} from "../Ui/Lifecycle/RegisterableComponent";
+import property = cc._decorator.property;
+import ccclass = cc._decorator.ccclass;
 
+@ccclass
 export default abstract class Controller extends RegisterableComponent {
 
     private static map = new Map<Function, Controller>()
@@ -7,22 +10,26 @@ export default abstract class Controller extends RegisterableComponent {
         return this.map.get(ctor) as T
     }
 
+    @property()
+    hideAtStart: boolean = false
+
     protected onControllerAwake() {}
 
     protected onLoad(): void {
-        super.onLoad();
         this.setInstance()
         this.onControllerAwake()
     }
 
     protected onEnable(): void {
-        super.onEnable()
         this.setInstance()
     }
 
     onRegister() {
         super.onRegister();
         this.setInstance()
+        if (this.hideAtStart) {
+            this.node.active = false
+        }
     }
 
     onUnregister() {
