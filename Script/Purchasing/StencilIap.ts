@@ -105,8 +105,11 @@ export class StencilIap {
     }
 
     private static fakePurchase(id: string) {
+        const product = this.createFakeProduct(this.fakeProducts().find(value => value.id == id))
         if (window.confirm(`Purchase item ${id}?`)) {
-            // TODO grant
+            this.listener.onSuccess(product)
+        } else {
+            this.listener.onFailure(product, 'Canceled')
         }
     }
 
