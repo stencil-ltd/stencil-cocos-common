@@ -23,10 +23,6 @@ export default class StencilLabel extends cc.Component {
         this._label = this.getComponent(Label)
     }
 
-    protected start() {
-        this.refresh()
-    }
-
     protected update(dt: number): void {
         if (CC_EDITOR) {
             this.refresh()

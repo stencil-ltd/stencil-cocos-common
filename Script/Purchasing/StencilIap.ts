@@ -23,11 +23,12 @@ export class StencilIap {
     public static init(config: string = null, listener: ProductListener): boolean {
         this.listener = listener
 
-        const available = true
+        let available = true
         if ('undefined' == typeof(sdkbox) || 'undefined' == typeof(sdkbox.IAP)) {
             console.log('sdkbox or sdkbox.IAP is undefined')
-            this.isAvailable = false
+            available = false
         }
+        this.isAvailable = available
 
         console.log(`StencilIap Init (real: ${available})`)
 
