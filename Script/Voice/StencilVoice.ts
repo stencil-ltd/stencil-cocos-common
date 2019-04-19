@@ -40,6 +40,8 @@ export default class StencilVoice {
                 cc.error("Can't find platform for voice.")
                 break
         }
+        console.log(`StencilVoice init: ${this.platform.constructor.name}`)
+        this.platform && this.platform.init()
     }
 
     public static isReady(): boolean {
