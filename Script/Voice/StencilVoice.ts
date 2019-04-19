@@ -1,4 +1,8 @@
 import StencilNative from "../Native/StencilNative";
+import StencilVoicePlatform from "./Platform/StencilVoicePlatform";
+import place = cc.place;
+import StencilVoiceAndroid from "./Platform/StencilVoiceAndroid";
+import StencilVoiceIos from "./Platform/StencilVoiceIos";
 
 export interface StencilVoiceGlobal {
     listener: StencilVoiceListener
@@ -18,37 +22,39 @@ export interface StencilVoiceListener {
 
 export default class StencilVoice {
 
-    private static className = "ltd/stencil/voice/StencilVoice"
+    private static platform: StencilVoicePlatform = null;
 
     public static init(listener: StencilVoiceListener) {
         window['stencil'] = window['stencil'] || {}
         window['stencil'].voice = {
             listener: listener
         }
-        this.call('init')
+        switch (cc.sys.os) {
+            case cc.sys.OS_ANDROID:
+                this.platform = new StencilVoiceAndroid()
+                break
+            case cc.sys.OS_IOS:
+                this.platform = new StencilVoiceIos()
+                break
+            default:
+                cc.error("Can't find platform for voice.")
+                break
+        }
     }
 
     public static isReady(): boolean {
-        return this.call('isReady', '()Z') as boolean
+        return this.platform && this.platform.isReady()
     }
 
     public static startListening() {
-        this.call('startListening')
+        this.platform && this.platform.startListening()
     }
 
     public static stopListening() {
-        this.call('stopListening')
+        this.platform && this.platform.stopListening()
     }
 
     public static destroy() {
-        this.call('destroy')
-    }
-
-    private static call(method: string, signature: string = '()V', ...args: any[]): any {
-        StencilNative.call(
-            this.className,
-            method,
-            signature,
-            ...args)
+        this.platform && this.platform.destroy()
     }
 }
