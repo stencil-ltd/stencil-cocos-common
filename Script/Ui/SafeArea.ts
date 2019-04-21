@@ -46,7 +46,6 @@ export default class SafeArea extends Controller {
             widget.top = top
             widget.bottom = bot
             console.log(`SafeArea: ${top} + ${bot} (${JSON.stringify(safe)} vs ${JSON.stringify(vis)})`)
-            widget.updateAlignment()
         }
     }
 }
