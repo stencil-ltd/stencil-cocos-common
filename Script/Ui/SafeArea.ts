@@ -22,7 +22,8 @@ export default class SafeArea extends Controller {
 
     private fullArea(): Rect {
         const orig = cc.view.getViewportRect()
-        const scale = 1080 / orig.width
+        const vWidth = this.node.parent.width
+        const scale = vWidth / orig.width
         return new Rect(orig.x * scale, orig.y * scale, orig.width * scale, orig.height * scale)
     }
 
@@ -45,7 +46,7 @@ export default class SafeArea extends Controller {
             widget.top = top
             widget.bottom = bot
             console.log(`SafeArea: ${top} + ${bot} (${JSON.stringify(safe)} vs ${JSON.stringify(vis)})`)
-            this.getComponentsInChildren(Widget).forEach(value => value.updateAlignment())
+            widget.updateAlignment()
         }
     }
 }
