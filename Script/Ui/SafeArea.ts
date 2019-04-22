@@ -18,8 +18,6 @@ export default class SafeArea extends Controller {
     @property()
     testNotch: boolean = false
 
-    private fixed = false
-
     private fullArea(): Rect {
         const orig = cc.view.getViewportRect()
         const vWidth = this.node.parent.width
@@ -35,17 +33,15 @@ export default class SafeArea extends Controller {
         return cc.sys.getSafeAreaRect()
     }
 
-    protected update(dt: number): void {
-        if (!this.fixed) {
-            this.fixed = true
-            const widget = this.getComponent(Widget)
-            const safe = this.safeArea()
-            const vis = this.fullArea()
-            const top = safe.yMin - vis.yMin
-            const bot = vis.yMax - safe.yMax
-            widget.top = top
-            widget.bottom = bot
-            console.log(`SafeArea: ${top} + ${bot} (${JSON.stringify(safe)} vs ${JSON.stringify(vis)})`)
-        }
+    protected onLoad(): void {
+        super.onLoad()
+        const widget = this.getComponent(Widget)
+        const safe = this.safeArea()
+        const vis = this.fullArea()
+        const top = safe.yMin - vis.yMin
+        const bot = vis.yMax - safe.yMax
+        widget.top = top
+        widget.bottom = bot
+        console.log(`SafeArea: ${top} + ${bot} (${JSON.stringify(safe)} vs ${JSON.stringify(vis)})`)
     }
 }
