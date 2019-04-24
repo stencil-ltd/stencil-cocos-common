@@ -1,9 +1,12 @@
 import menu = cc._decorator.menu;
 import property = cc._decorator.property;
+import requireComponent = cc._decorator.requireComponent;
+import Button = cc.Button;
 
 const {ccclass} = cc._decorator;
 
 @ccclass
+@requireComponent(Button)
 @menu("Stencil/Ui/HideOnClick")
 export default class HideOnClick extends cc.Component {
 
