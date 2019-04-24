@@ -1,6 +1,7 @@
 import Sprite = cc.Sprite;
 import Texture2D = cc.Texture2D;
 import RetryLoader from "../../../../Script/Data/RetryLoader";
+import SpriteFrame = cc.SpriteFrame;
 
 export default class ImageLoading {
 
@@ -12,7 +13,7 @@ export default class ImageLoading {
             const start = Date.now()
             const tex = await loader.load() as Texture2D
             const stop = Date.now()
-            sprite.spriteFrame.setTexture(tex)
+            sprite.spriteFrame = new SpriteFrame(tex)
             sprite.node.opacity = 0
             sprite.enabled = true
             console.log(`load time (${stop - start}) for ${url}`)
