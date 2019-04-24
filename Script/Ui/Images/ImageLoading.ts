@@ -15,8 +15,8 @@ export default class ImageLoading {
             sprite.spriteFrame.setTexture(tex)
             sprite.node.opacity = 0
             sprite.enabled = true
-            console.log(`load time (${stop} - ${start}) for ${url}`)
-            if (stop - start <= 16) { // 16ms = less than a frame
+            console.log(`load time (${stop - start}) for ${url}`)
+            if (stop - start <= 50) { // 16ms = less than a frame
                 sprite.node.opacity = 255
             } else {
                 sprite.node.runAction(cc.fadeIn(0.5))
