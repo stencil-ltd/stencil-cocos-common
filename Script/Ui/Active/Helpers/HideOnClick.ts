@@ -16,6 +16,7 @@ export default class HideOnClick extends cc.Component {
     }
 
     private onClick() {
+        console.log(`hide ${this.target}`)
         this.target.active = false
     }
 }
