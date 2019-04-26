@@ -5,13 +5,17 @@ import SpriteFrame = cc.SpriteFrame;
 
 export default class ImageLoading {
 
-    public static async setUrl(sprite: Sprite, url: string): Promise<Texture2D> {
-        if (!sprite) return null
+    public static async setUrl(sprite: Sprite, url: string): Promise<void> {
+        if (!sprite) return
         const loader = new RetryLoader(url)
         sprite.enabled = false
         try {
             const start = Date.now()
             const tex = await loader.load() as Texture2D
+            if (!sprite.isValid) {
+                console.log(`Sprite is no longer valid: ${url}`)
+                return
+            }
             const stop = Date.now()
             sprite.spriteFrame = new SpriteFrame(tex)
             sprite.node.opacity = 0
@@ -22,9 +26,9 @@ export default class ImageLoading {
             } else {
                 sprite.node.runAction(cc.fadeIn(0.5))
             }
-            return tex
+            return
         } catch (e) {
-            console.error(e)
+            console.error(`Image Load Error: ${e.message}`)
         }
     }
 }
