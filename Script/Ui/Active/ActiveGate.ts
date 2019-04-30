@@ -1,9 +1,8 @@
 import ActiveManager from "./ActiveManager";
-import Component = cc.Component;
 import requireComponent = cc._decorator.requireComponent;
 
 @requireComponent(ActiveManager)
-export default abstract class ActiveGate extends Component {
+export abstract class ActiveGate extends cc.Component {
 
     public manager: ActiveManager
 
@@ -12,7 +11,6 @@ export default abstract class ActiveGate extends Component {
     }
     public didRegister() {}
     public onUnregister() {}
-    public didUnregister() {}
 
     public abstract check(): boolean
 

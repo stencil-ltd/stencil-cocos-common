@@ -1,15 +1,14 @@
-import menu = cc._decorator.menu;
-import ActiveGate from "../ActiveGate";
 import property = cc._decorator.property;
 import ActiveManager from "../ActiveManager";
 import {Keyable} from "../../../Foundation/Keyable";
 import StateMachine from "../../../State/StateMachine";
 import {StateChange} from "../../../State/StateChange";
-import Widget = cc.Widget;
+
+import {ActiveGate} from "../ActiveGate";
 
 const {ccclass} = cc._decorator;
 
-export default abstract class StateGate<T> extends ActiveGate implements Keyable {
+export abstract class StateGate<T> extends ActiveGate implements Keyable {
 
     @property key: string = ""
     @property invert: boolean = false

@@ -1,7 +1,7 @@
 import menu = cc._decorator.menu;
 import {RegisterableComponent} from "../Lifecycle/RegisterableComponent";
 import property = cc._decorator.property;
-import ActiveGate from "./ActiveGate";
+import {ActiveGate} from "./ActiveGate";
 
 const {ccclass} = cc._decorator;
 
@@ -26,6 +26,7 @@ export default class ActiveManager extends RegisterableComponent {
 
     didRegister() {
         super.didRegister();
+        if (this.gates) this.gates.forEach(value => value.didRegister())
         this.check()
     }
 
