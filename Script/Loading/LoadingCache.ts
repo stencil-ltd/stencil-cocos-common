@@ -1,38 +1,30 @@
 import Texture2D = cc.Texture2D;
 import PromiseLoading from "./PromiseLoading";
+import {makeRequest} from "../Waiting/StencilWaiting";
 
 export default class LoadingCache {
 
     public static readonly instance: LoadingCache = new LoadingCache()
 
-    private _storage: StencilStorage
-
     private readonly _root: string
 
     constructor(root?: string) {
         this._root = root || 'default'
-        this._storage = new StencilStorage(root)
     }
 
     private getLocal(url: string): string {
-        return `${jsb.fileUtils.getWritablePath()}/stencil/cache/${this._root}/${escape(url)}`
-    }
-
-    private getBytes(tex: Texture2D): string {
-        // @ts-ignore
-        return tex.getHtmlElementObj().toDataURL()
+        const hash = url.hashCode()
+        return `${jsb.fileUtils.getWritablePath()}stencil/cache/${this._root}/${hash}`
     }
 
     public async loadImage(url: string): Promise<Texture2D> {
         const file = this.getLocal(url)
-        try {
-            return await PromiseLoading.loadSingle(file)
-        } catch (e) {
-            const retval = await PromiseLoading.loadSingle(url) as Texture2D
-            const bytes = this.getBytes(retval)
-            console.log(`Found bytes ${bytes} for image`)
-            jsb.fileUtils.writeDataToFile(bytes, file)
-            return retval
+        console.log(`LoadingCache: loadImage(${url}) => ${file}`)
+        if (!jsb.fileUtils.isFileExist(file)) {
+            const data = await makeRequest('GET', url)
+            console.log(`LoadingCache: Found bytes for ${url}`)
+            jsb.fileUtils.writeDataToFile(data, file)
         }
+        return await PromiseLoading.loadSingle(file)
     }
 }
