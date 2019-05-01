@@ -1,10 +1,30 @@
 import Action = cc.Action;
-import {sleep} from "../Foundation/StencilJs";
+import {sleepMs, sleepSeconds} from "../Foundation/StencilJs";
+import AnimationState = cc.AnimationState;
 
-export async function awaitAction(action: Action): Promise<void> {
-    while (!action.isDone()) await sleep(16)
+declare global {
+    export module cc {
+        export interface Action {
+            wait(): Promise<any>
+        }
+        export interface AnimationState {
+            wait(): Promise<any>
+        }
+    }
 }
 
-export default class StencilWaiting {
+async function awaitAction(action: Action): Promise<void> {
+    while (!action.isDone()) await sleepMs(16)
+}
 
+async function awaitAnim(state: AnimationState): Promise<void> {
+    return sleepSeconds(state.duration)
+}
+
+cc.Action.prototype['wait'] = function (): Promise<any> {
+    return awaitAction(this)
+}
+
+cc.AnimationState.prototype['wait'] = function (): Promise<any> {
+    return awaitAnim(this)
 }

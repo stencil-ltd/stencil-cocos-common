@@ -1,6 +1,12 @@
-export function sleep(ms): Promise<any> {
+export function sleepSeconds(seconds: number): Promise<any> {
+    return sleepMs(seconds * 1000)
+}
+
+export function sleepMs(ms: number): Promise<any> {
+    console.log(`sleep ${ms}ms`)
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 /**
  * Fast UUID generator, RFC4122 version 4 compliant.
  * @author Jeff Ward (jcward.com).
