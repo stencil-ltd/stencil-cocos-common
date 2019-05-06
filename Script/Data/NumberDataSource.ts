@@ -18,4 +18,8 @@ export class NumberDataSource extends DataSource<number> {
             value = Math.max(value, this.minValue)
         return value
     }
+
+    public isAtLeast(value: number): boolean {
+        return this.value() >= value
+    }
 }
