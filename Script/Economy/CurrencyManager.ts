@@ -32,7 +32,7 @@ export default class CurrencyManager {
         const key = `__currencies/default/${currency.key}`
         const saved = cc.sys.localStorage.getItem(key)
         if (saved) {
-            currency.initialize(saved)
+            currency.initialize(JSON.parse(saved))
         }
     }
 }
