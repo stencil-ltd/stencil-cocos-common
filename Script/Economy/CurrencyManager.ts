@@ -28,6 +28,12 @@ export default class CurrencyManager {
         cc.sys.localStorage.setItem(key, JSON.stringify(currency.serialize()))
     }
 
+    public clear() {
+        this._map.forEach(value => {
+            value.reset()
+        })
+    }
+
     private load(currency: Currency) {
         const key = `__currencies/default/${currency.key}`
         const saved = cc.sys.localStorage.getItem(key)

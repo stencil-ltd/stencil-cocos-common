@@ -76,6 +76,13 @@ export default class Currency implements CurrencySpec, Subscribeable<number> {
         return this
     }
 
+    public reset() {
+        this._save = {
+            amount: this.startAmount
+        }
+        this.save()
+    }
+
     public serialize(): CurrencySave {
         return this._save
     }
