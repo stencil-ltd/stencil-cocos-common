@@ -24,7 +24,7 @@ export default class Currency implements CurrencySpec, Subscribeable<number> {
         this.minAmount = this.spec.minAmount || 0
         this.startAmount = this.spec.startAmount || 0
         this._save = {
-            amount: this.spec.startAmount
+            amount: this.startAmount
         }
     }
 
@@ -32,11 +32,16 @@ export default class Currency implements CurrencySpec, Subscribeable<number> {
         return this._save.amount
     }
 
+    public set(amount: number): boolean {
+        if (amount === this._save.amount) return false
+        this._save.amount = amount
+        this.notify()
+    }
+
     public add(amount: number): boolean {
-        const sanitized = this._sanitize(amount)
-        if (sanitized === this.amount()) return false
-        this._save.amount = sanitized
-        return true
+        let total = this._save.amount + amount
+        total = this._sanitize(total)
+        return this.set(total)
     }
 
     public spend(amount: number): boolean {

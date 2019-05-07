@@ -22,7 +22,7 @@ export default class CurrencyLabel extends CurrencyView {
 
     protected onChange() {
         const amount = this.amount()
-        if (amount) {
+        if (amount != null) {
             this._label.string = `${this.prefix}${this.amount()}`
         } else {
             this._label.string = ''
