@@ -33,7 +33,7 @@ export namespace Stencil {
             /**
              * Called when IAP initialized
              */
-            onInitialized (success : boolean)
+            onInitialized? (success : boolean)
 
             /**
              * Called when an IAP processed successfully

@@ -24,6 +24,10 @@ export default abstract class Controller extends RegisterableComponent {
         this.setInstance()
     }
 
+    protected onDisable(): void {
+        // just to get symmetry with intellisense super calls.
+    }
+
     onRegister() {
         super.onRegister();
         this.setInstance()

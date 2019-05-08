@@ -2,56 +2,78 @@ import {Stencil} from "./SdkBoxIap";
 import ProductListener = Stencil.Purchasing.ProductListener;
 import Product = Stencil.Purchasing.Product;
 
-class ListenWrapper implements ProductListener {
+export class ListenWrapper implements ProductListener {
 
-    private readonly inner: ProductListener
+    private readonly inner: ProductListener[] = []
 
-    constructor(inner: ProductListener) {
-        this.inner = inner;
+    public addListener(listener: ProductListener) {
+        this.inner.push(listener)
+    }
+
+    public removeListener(listener: ProductListener) {
+        this.inner.splice(this.inner.indexOf(listener), 1)
     }
 
     onInitialized(success: boolean) {
-        if (this.inner.onInitialized)
-            this.inner.onInitialized(success)
+        this.inner.forEach(value => {
+            if (value.onInitialized) 
+                value.onInitialized(success)
+        })
     }
 
     onCanceled(p: Product) {
-        if (this.inner.onCanceled)
-            this.inner.onCanceled(p)
+        this.inner.forEach(value => {
+            if (value.onCanceled)
+                value.onCanceled(p)  
+        })
     }
 
     onConsumed(p: Product, error: string) {
-        if (this.inner.onConsumed)
-            this.inner.onConsumed(p, error)
+        this.inner.forEach(value => {
+            if (value.onConsumed)
+                value.onConsumed(p, error)
+        })
     }
 
     onFailure(p: Product, msg: string) {
-        if (this.inner.onFailure)
-            this.inner.onFailure(p, msg)
+        this.inner.forEach(value => {
+            if (value.onFailure)
+                value.onFailure(p, msg)
+        })
     }
 
     onProductRequestFailure(msg: string) {
-        if (this.inner.onProductRequestFailure)
-            this.inner.onProductRequestFailure(msg)
+        this.inner.forEach(value => {
+            if (value.onProductRequestFailure)
+                value.onProductRequestFailure(msg)
+        })        
     }
 
     onProductRequestSuccess(products: Product[]) {
-        if (this.inner.onProductRequestSuccess)
-            this.inner.onProductRequestSuccess(products)
+        this.inner.forEach(value => {
+            if (value.onProductRequestSuccess)
+                value.onProductRequestSuccess(products)
+        })        
     }
 
     onRestoreComplete(ok: boolean, msg: string) {
-        if (this.inner.onRestoreComplete)
-            this.inner.onRestoreComplete(ok, msg)
+        this.inner.forEach(value => {
+            if (value.onRestoreComplete)
+                value.onRestoreComplete(ok, msg)
+        })
     }
 
     onRestored(p: Product) {
-        if (this.inner.onRestored)
-            this.inner.onRestored(p)
+        this.inner.forEach(value => {
+            if (value.onRestored)
+                value.onRestored(p)
+        })
     }
 
     onSuccess(p: Product) {
-        if (this.inner.onSuccess)
-            this.inner.onSuccess(p)
+        this.inner.forEach(value => {
+            if (value.onSuccess)
+                value.onSuccess(p)
+        })
     }
 }

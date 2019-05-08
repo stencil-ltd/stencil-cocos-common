@@ -4,15 +4,24 @@ import ProductListener = Stencil.Purchasing.ProductListener;
 import IapConfig = Stencil.Purchasing.IapConfig;
 import IapConfigItem = Stencil.Purchasing.IapConfigItem;
 import Product = Stencil.Purchasing.Product;
+import {ListenWrapper} from "./ListenWrapper";
 
 export class StencilIap {
 
     public static testPlatform: IapPlatform = IapPlatform.ios
 
-    private static listener: ProductListener = null
+    private static listener = new ListenWrapper()
     private static config: IapConfig = null
 
     public static isAvailable: boolean = false
+
+    public static addListener(listener: ProductListener) {
+        this.listener.addListener(listener)
+    }
+
+    public static removeListener(listener: ProductListener) {
+        this.listener.removeListener(listener)
+    }
 
     /**
      * Initialize Stencil's IAP wrapper. Good on you.
@@ -21,7 +30,7 @@ export class StencilIap {
      * @return true if IAP is available and successfully initialized.
      */
     public static init(config: string = null, listener: ProductListener): boolean {
-        this.listener = listener
+        this.listener.addListener(listener)
 
         let available = true
         if ('undefined' == typeof(sdkbox) || 'undefined' == typeof(sdkbox.IAP)) {
@@ -34,7 +43,7 @@ export class StencilIap {
 
         if (this.isAvailable) {
             console.log(`setting listener`) // TODO need to do fake listener logic
-            sdkbox.IAP.setListener(listener)
+            sdkbox.IAP.setListener(this.listener)
         }
 
         if (config) {
