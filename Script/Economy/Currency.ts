@@ -47,6 +47,7 @@ export default class Currency implements CurrencySpec, Subscribeable<number> {
     }
 
     public spend(amount: number): CurrencyOperation {
+        if (!amount) return this._succeed()
         if (amount <= this.amount()) {
             this.add(-amount)
             return this._succeed()
