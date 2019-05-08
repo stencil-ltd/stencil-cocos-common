@@ -30,7 +30,7 @@ export class StencilIap {
      * @return true if IAP is available and successfully initialized.
      */
     public static init(config: string = null, listener: ProductListener): boolean {
-        this.listener.addListener(listener)
+        this.addListener(listener)
 
         let available = true
         if ('undefined' == typeof(sdkbox) || 'undefined' == typeof(sdkbox.IAP)) {
@@ -98,12 +98,12 @@ export class StencilIap {
     }
 
     public static purchase(id: string) {
+        console.log(`Attempt purchase: ${id}`)
         if (!this.isAvailable) {
             console.log(`StencilIap Not Available`)
             this.fakePurchase(id)
             return
         }
-        console.log(`Attempt purchase: ${id}`)
         return sdkbox.IAP.purchase(id)
     }
 
