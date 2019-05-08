@@ -105,6 +105,16 @@ export class StencilIap {
         return sdkbox.IAP.getProducts() as Product[]
     }
 
+    public static scrubbedTitle(product: Product): string {
+        let title = product.title
+        if (!title) return product.id
+        const index = title.indexOf('(')
+        if (index >= 0) {
+            title = title.slice(0, index).trim()
+        }
+        return title
+    }
+
     private static fakePurchase(id: string) {
         const product = this.createFakeProduct(this.fakeProducts().find(value => value.id == id))
         if (window.confirm) {
