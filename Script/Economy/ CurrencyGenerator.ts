@@ -23,6 +23,16 @@ export default class CurrencyGenerator extends Component {
     private _currency: Currency
     private _fn: Function
 
+    /**
+     * time in milliseconds
+     */
+    public timeRemaining(): number {
+        const mark = this.getMark() || new Date()
+        const now = new Date()
+        const next = new Date(mark.valueOf() + this.seconds*1000)
+        return next.valueOf() - now.valueOf()
+    }
+
     private getKey(): string {
         return `__currency_generate_mark_${this.key}`
     }
@@ -49,11 +59,9 @@ export default class CurrencyGenerator extends Component {
     }
 
     private _onTick() {
-        const mark = this.getMark() || new Date()
-        const now = new Date()
-        const elapsed = (now.valueOf() - mark.valueOf()) / 1000
-        if (elapsed > this.seconds) {
-            this.setMark(now)
+        const remaining = this.timeRemaining()
+        if (remaining <= 0) {
+            this.setMark(new Date())
             this._currency.add(this.amount).save()
         }
     }
