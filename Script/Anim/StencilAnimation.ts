@@ -15,6 +15,7 @@ export default class StencilAnimation extends cc.Component {
     private _anim: cc.Animation
 
     protected onLoad(): void {
+        this._anim = this.getComponent(cc.Animation)
     }
 
     protected onEnable(): void {
