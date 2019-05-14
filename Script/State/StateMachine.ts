@@ -5,7 +5,7 @@ import {Subscribeable} from "../Foundation/Subscribeable";
 import {Lockable} from "../Foundation/Lockable";
 import {Keyable} from "../Foundation/Keyable";
 
-export default class StateMachine<T> implements Subscribeable<T>, Lockable, Keyable {
+export default class StateMachine<T> implements Subscribeable<StateChange<T>>, Lockable, Keyable {
 
     private static map = new Map<string, StateMachine<any>>()
 
@@ -67,7 +67,7 @@ export default class StateMachine<T> implements Subscribeable<T>, Lockable, Keya
         this.requestState(this.initialState, true)
     }
 
-    subscribe(owner: any, fn: (T) => void) {
+    subscribe(owner: any, fn: (change: StateChange<T>) => void) {
         this._sub.subscribe(owner, fn)
     }
 
