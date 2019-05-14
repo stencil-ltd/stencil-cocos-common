@@ -5,6 +5,7 @@ import IapConfig = Stencil.Purchasing.IapConfig;
 import IapConfigItem = Stencil.Purchasing.IapConfigItem;
 import Product = Stencil.Purchasing.Product;
 import {ListenWrapper} from "./ListenWrapper";
+import IapConversion, {IapSimpleConfig} from "./IapConversion";
 
 export class StencilIap {
 
@@ -12,6 +13,7 @@ export class StencilIap {
 
     private static listener = new ListenWrapper()
     private static config: IapConfig = null
+    private static simple: IapSimpleConfig = null
 
     public static isAvailable: boolean = false
 
@@ -29,11 +31,12 @@ export class StencilIap {
      * @param listener - provide a single listener for all emitted IAP events.
      * @return true if IAP is available and successfully initialized.
      */
-    public static init(config: string = null, listener: ProductListener): boolean {
+    public static init(config: IapSimpleConfig, listener: ProductListener): boolean {
+        this.simple = config
         this.addListener(listener)
 
         let available = true
-        if ('undefined' == typeof(sdkbox) || 'undefined' == typeof(sdkbox.IAP)) {
+        if ('undefined' == typeof (sdkbox) || 'undefined' == typeof (sdkbox.IAP)) {
             console.log('sdkbox or sdkbox.IAP is undefined')
             available = false
         }
@@ -46,43 +49,35 @@ export class StencilIap {
             sdkbox.IAP.setListener(this.listener)
         }
 
-        if (config) {
-            console.log(`Attempting to load config: ${config}`)
-            cc.loader.loadRes(config, cc.JsonAsset, (error, resource) => {
-                const str = resource ? JSON.stringify(resource.json) : null;
-                console.log(`loaded config: ${str} (${error})`)
-                if (error) {
-                    console.error(error.message)
-                    return
-                }
-                this._init(str)
-            })
-        } else {
-            this._init()
-        }
-
+        console.log(`Attempting to load config: ${config}`)
+        this._init(IapConversion.convert(config))
         return available
     }
 
-    private static _init(configRes?: string) {
-        const available = this.isAvailable
-        if (configRes && configRes.length > 0) {
-            console.log(`Found config file.`)
-            this.config = JSON.parse(configRes)
-            if (available) {
-                console.log(`SDKBox available. Initializing with file.`)
-                // @ts-ignore
-                sdkbox.IAP.init(configRes)
-            }
-        } else {
-            console.log(`Could not load config file.`)
-            if (available) {
-                console.log(`SDKBox available. Initializing with default file.`)
-                // @ts-ignore
-                sdkbox.IAP.init()
+    public static lookup(p: Product): IapConfigItem {
+        let retval = this.simple.items.find(value => value.id == p.id)
+        if (!retval) {
+            switch (cc.sys.platform) {
+                case cc.sys.ANDROID: {
+                    retval = this.simple.android.items.find(value => value.id == p.id)
+                    break
+                }
+                case cc.sys.IPHONE: {
+                    retval = this.simple.ios.items.find(value => value.id == p.id)
+                    break
+                }
             }
         }
+        return retval
+    }
 
+    private static _init(config: IapConfig) {
+        const available = this.isAvailable
+        this.config = config
+        if (available) {
+            console.log(`SDKBox available. Initializing with file.`)
+            sdkbox.IAP.init(config)
+        }
         console.log(`StencilIap configured.`)
         this.refresh()
     }
