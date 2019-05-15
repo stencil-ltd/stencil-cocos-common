@@ -2,6 +2,16 @@ import moment = require("moment");
 
 export default class StencilDates {
 
+    private static _inject: Date|null = null
+
+    public static inject(date: Date|null) {
+        this._inject = date
+    }
+
+    public static date(): Date {
+        return this._inject || new Date()
+    }
+
     public static sameDay(d1: Date, d2: Date): boolean {
         if (!d1 || !d2) return false
         return d1.getFullYear() === d2.getFullYear() &&
@@ -24,5 +34,4 @@ export default class StencilDates {
         const m = moment(fmt, 'YYYYMMDD')
         return m.toDate()
     }
-
 }
