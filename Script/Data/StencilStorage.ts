@@ -33,6 +33,9 @@ export default class StencilStorage {
     }
 
     setDate(key: string, value: Date) {
-        this.setString(key, StencilDates.dayFormat(value))
+        if (!value)
+            this.remove(key)
+        else
+            this.setString(key, StencilDates.dayFormat(value))
     }
 }
