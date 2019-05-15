@@ -5,6 +5,7 @@ export default class StencilDates {
     private static _inject: Date|null = null
 
     public static inject(date: Date|null) {
+        console.warn(`Injecting Date: ${date}`)
         this._inject = date
     }
 
