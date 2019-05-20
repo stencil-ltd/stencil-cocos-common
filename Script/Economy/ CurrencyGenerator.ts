@@ -28,22 +28,24 @@ export default class CurrencyGenerator extends Component {
      * time in milliseconds
      */
     public timeRemaining(): number {
-        let mark = this.getMark()
-        if (!mark) {
-            mark = new Date()
-            this.setMark(mark)
-        }
-        const now = new Date()
-        const next = new Date(mark.valueOf() + this.seconds*1000)
-        return next.valueOf() - now.valueOf()
+        return this.next().valueOf() - new Date().valueOf()
+    }
+
+    public next(): Date {
+        return new Date(this.getMark().valueOf() + this.seconds*1000)
     }
 
     private getKey(): string {
         return `__currency_generate_mark_${this.key}`
     }
 
-    private getMark(): Date|null {
-        return StencilStorage.default.getDateTime(this.getKey())
+    private getMark(): Date {
+        let mark = StencilStorage.default.getDateTime(this.getKey())
+        if (!mark) {
+            mark = new Date()
+            this.setMark(mark)
+        }
+        return mark
     }
 
     private setMark(date: Date) {
@@ -62,9 +64,8 @@ export default class CurrencyGenerator extends Component {
     }
 
     private _onTick() {
-        const remaining = this.timeRemaining()
-        if (remaining <= 0) {
-            this.setMark(new Date())
+        while (this.timeRemaining() <= 0) {
+            this.setMark(this.next())
             this._currency.add(this.amount).save()
         }
     }
