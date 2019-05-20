@@ -35,4 +35,10 @@ export default class StencilDates {
         const m = moment(fmt, 'YYYYMMDD')
         return m.toDate()
     }
+
+    public static hhmmssFormat(d: Date): string {
+        return `${d.getHours()}`.padStart(2, '0') + ':'
+            + `${d.getMinutes()}`.padStart(2, '0') + ':'
+            + `${d.getSeconds()}`.padStart(2, '0')
+    }
 }
