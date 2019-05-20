@@ -19,15 +19,11 @@ export default class StencilAnalytics implements StencilTracker {
         this._trackers.push(tracker)
     }
 
-    identify(uid: string, args?: { [p: string]: string | number | boolean }) {
-        this._trackers.forEach(value => value.identify(uid, args))
+    identify(uid: string) {
+        this._trackers.forEach(value => value.identify(uid))
     }
 
     track(event: string, args?: { [p: string]: string | number | boolean }) {
         this._trackers.forEach(value => value.track(event, args))
-    }
-
-    set(property: string, value: string | number | boolean) {
-        this._trackers.forEach(value1 => value1.set(property, value))
     }
 }
