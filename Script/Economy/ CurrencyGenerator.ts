@@ -4,11 +4,12 @@ import Currency from "./Currency";
 import Controller from "../Lifecycle/Controller";
 import CurrencyManager from "./CurrencyManager";
 import Component = cc.Component;
+import StencilStorage from "../Storage/StencilStorage";
 
 const {ccclass} = cc._decorator;
 
 @ccclass
-@menu("Stencil/Econ/ CurrencyGenerator")
+@menu("Stencil/Econ/CurrencyGenerator")
 export default class CurrencyGenerator extends Component {
 
     @property()
@@ -27,7 +28,11 @@ export default class CurrencyGenerator extends Component {
      * time in milliseconds
      */
     public timeRemaining(): number {
-        const mark = this.getMark() || new Date()
+        let mark = this.getMark()
+        if (!mark) {
+            mark = new Date()
+            this.setMark(mark)
+        }
         const now = new Date()
         const next = new Date(mark.valueOf() + this.seconds*1000)
         return next.valueOf() - now.valueOf()
@@ -38,13 +43,11 @@ export default class CurrencyGenerator extends Component {
     }
 
     private getMark(): Date|null {
-        const str = cc.sys.localStorage.getItem(this.getKey()) as string
-        if (!str) return null
-        return new Date(str)
+        return StencilStorage.default.getDateTime(this.getKey())
     }
 
     private setMark(date: Date) {
-        cc.sys.localStorage.setItem(this.getKey(), `${Date.now()}`)
+        StencilStorage.default.setDateTime(this.getKey(), date)
     }
 
     protected onLoad(): void {

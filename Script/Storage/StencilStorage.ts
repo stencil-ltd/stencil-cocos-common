@@ -38,6 +38,19 @@ export default class StencilStorage {
         this._strategy.setInt(key, value)
     }
 
+    getDateTime(key: string): Date|null {
+        var str = this.getString(key)
+        if (!str) return null
+        return new Date(parseInt(str))
+    }
+
+    setDateTime(key: string, value: Date) {
+        if (!value)
+            this.remove(key)
+        else
+            this.setString(key, `${value.valueOf()}`)
+    }
+
     getDate(key: string): Date|null {
         return StencilDates.fromDayFormat(this.getString(key))
     }
