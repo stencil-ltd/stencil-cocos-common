@@ -82,7 +82,9 @@ export class NativeMethod {
 export enum NativeType {
     Void = "V",
     Boolean = "Z",
-    String = "Ljava/lang/String"
+    String = "Ljava/lang/String",
+    Float = "F",
+    Int = "I"
 }
 
 export interface NativeArg {
