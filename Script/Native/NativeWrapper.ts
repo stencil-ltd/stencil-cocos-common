@@ -46,7 +46,7 @@ export class NativeMethod {
     }
 
     public _androidSignature(): string {
-        const params = this._args.map(value => value.type.toString()).join(';')
+        const params = this._args.map(value => value.type.toString()).join('')
         return `(${params})${this._returns.toString()}`
     }
 
@@ -82,7 +82,7 @@ export class NativeMethod {
 export enum NativeType {
     Void = "V",
     Boolean = "Z",
-    String = "Ljava/lang/String",
+    String = "Ljava/lang/String;",
     Float = "F",
     Int = "I"
 }
