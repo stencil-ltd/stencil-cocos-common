@@ -14,12 +14,12 @@ export default class NativeWrapper {
         this.className = className;
     }
 
-    public call(name: string): NativeCall {
-        return new NativeCall(this.className.value(), name)
+    public method(name: string): NativeMethod {
+        return new NativeMethod(this.className.value(), name)
     }
 }
 
-export class NativeCall {
+export class NativeMethod {
 
     public readonly klass: string
     public readonly name: string
@@ -39,31 +39,42 @@ export class NativeCall {
         })
         return this
     }
+
     public returns(type: NativeType): this {
         this._returns = type
         return this
     }
 
+    public _androidSignature(): string {
+        const params = this._args.map(value => value.type.toString()).join(';')
+        return `(${params})${this._returns.toString()}`
+    }
+
+    public _androidClass(): string {
+        return this.klass.replace(new RegExp('\\.', 'g'), '/');
+    }
+
+    public _iosName(): string {
+        let name = this.name // foo
+        if (this._args.length > 0) {
+            const arg = this._args[0].name
+            name += "With"
+            name += arg.charAt(0).toUpperCase() + arg.slice(1)
+            name += ":"
+        }
+        for (let i = 1; i < this._args.length; ++i) {
+            name += this._args[i].name
+            name += ":"
+        }
+        return name
+    }
+
     public execute(...args: any[]): any {
         if (StencilPlatforms.isAndroid()) {
-            const params = this._args.map(value => value.type.toString()).join(';')
-            const sig = `(${params})${this._returns.toString()}`
-            return StencilNative.callJava(this.klass.replace('.','/'), this.name, sig, ...args)
+            return StencilNative.callJava(this._androidClass(), this.name, this._androidSignature(), ...args)
         }
-
         if (StencilPlatforms.isIos()) {
-            let name = this.name // foo
-            if (this._args.length > 0) {
-                const arg = this._args[0].name
-                name += "With"
-                name += arg.charAt(0) + arg.slice(1)
-                name += ":"
-            }
-            for (let i = 1; i < this._args.length; ++i) {
-                name += this._args[i]
-                name += ":"
-            }
-            return StencilNative.callIos(this.klass, name, ...args)
+            return StencilNative.callIos(this.klass, this._iosName(), ...args)
         }
     }
 }
@@ -71,7 +82,7 @@ export class NativeCall {
 export enum NativeType {
     Void = "V",
     Boolean = "Z",
-    String = "Ljava/lang/String;"
+    String = "Ljava/lang/String"
 }
 
 export interface NativeArg {
