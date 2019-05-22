@@ -1,6 +1,6 @@
 import menu = cc._decorator.menu;
 import property = cc._decorator.property;
-import CurrencyGenerator from "./ CurrencyGenerator";
+import CurrencyGenerator from "./CurrencyGenerator";
 import requireComponent = cc._decorator.requireComponent;
 import StencilDates from "../Dates/StencilDates";
 
