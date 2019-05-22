@@ -4,5 +4,5 @@ declare module cc {
         // 'en-us' and the like.
         const languageCode: string
     }
-    
+
 }
