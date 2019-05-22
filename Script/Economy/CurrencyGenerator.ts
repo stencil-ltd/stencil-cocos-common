@@ -66,7 +66,7 @@ export default class CurrencyGenerator extends Component {
     private _onTick() {
         while (this.timeRemaining() <= 0) {
             this.setMark(this.next())
-            this._currency.add(this.amount).save()
+            this._currency.add(this.amount).andSave()
         }
     }
 

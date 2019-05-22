@@ -10,7 +10,7 @@ export default class CurrencyOperation {
         this.success = success;
     }
 
-    public save(): boolean {
+    public andSave(): boolean {
         if (!this.success) return false
         this.currency.save()
         return true
