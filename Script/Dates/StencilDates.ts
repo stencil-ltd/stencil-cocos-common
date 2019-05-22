@@ -36,9 +36,19 @@ export default class StencilDates {
         return m.toDate()
     }
 
-    public static hhmmssFormat(d: Date): string {
+    public static hhmmssFormatDate(d: Date): string {
         return `${d.getHours()}`.padStart(2, '0') + ':'
             + `${d.getMinutes()}`.padStart(2, '0') + ':'
             + `${d.getSeconds()}`.padStart(2, '0')
+    }
+
+    public static hhmmssFormatTime(ms: number): string {
+        const sec_num = Math.floor(ms / 1000)
+        const hours = Math.floor(sec_num / 3600);
+        const minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+        const seconds = sec_num - (hours * 3600) - (minutes * 60);
+        return `${hours}`.padStart(2, '0') + ':'
+            + `${minutes}`.padStart(2, '0') + ':'
+            + `${seconds}`.padStart(2, '0')
     }
 }

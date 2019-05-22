@@ -22,7 +22,6 @@ export default class CurrencyCountdown extends cc.Component {
 
     protected update(dt: number): void {
         const remaining = this.generator.timeRemaining()
-        const date = new Date(remaining)
-        this._label.string = StencilDates.hhmmssFormat(date)
+        this._label.string = StencilDates.hhmmssFormatTime(remaining)
     }
 }

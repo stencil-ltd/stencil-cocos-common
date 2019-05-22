@@ -16,7 +16,7 @@ export default class CurrencyGenerator extends Component {
     public key: string = ''
 
     @property()
-    public seconds: number = 30 * 60
+    public seconds: number = 3600 // 1 hour
 
     @property()
     public amount: number = 1
@@ -28,7 +28,7 @@ export default class CurrencyGenerator extends Component {
      * time in milliseconds
      */
     public timeRemaining(): number {
-        return this.next().valueOf() - new Date().valueOf()
+        return this.next().valueOf() - Date.now()
     }
 
     public next(): Date {
