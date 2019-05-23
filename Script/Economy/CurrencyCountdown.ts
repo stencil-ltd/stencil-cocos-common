@@ -12,7 +12,7 @@ const {ccclass} = cc._decorator;
 export default class CurrencyCountdown extends cc.Component {
 
     @property(CurrencyGenerator)
-    generator: CurrencyGenerator
+    generator: CurrencyGenerator = null
 
     private _label: cc.Label
 
