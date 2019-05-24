@@ -13,16 +13,24 @@ export default class StencilAnalytics implements StencilTracker {
     public init(trackers: StencilTracker[]) {
         this._trackers = trackers
         if (CC_DEBUG) {
-            this.add(new LogTracker())
+            this.addTracker(new LogTracker())
         }
     }
 
-    public add(tracker: StencilTracker) {
+    public addTracker(tracker: StencilTracker) {
         this._trackers.push(tracker)
     }
 
-    public intercept(interceptor: (args: TrackingArgs) => void) {
+    public removeTracker(tracker: StencilTracker) {
+        this._trackers.splice(this._trackers.indexOf(tracker), 1)
+    }
+
+    public addInterceptor(interceptor: (args: TrackingArgs) => void) {
         this._interceptors.push(interceptor)
+    }
+
+    public removeInterceptor(interceptor: (args: TrackingArgs) => void) {
+        this._interceptors.splice(this._interceptors.indexOf(interceptor), 1)
     }
 
     identify(uid: string) {
