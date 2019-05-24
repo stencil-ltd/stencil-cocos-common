@@ -7,6 +7,6 @@ export default class LogTracker implements StencilTracker {
     }
 
     track(event: string, args?: { [p: string]: string | number | boolean }) {
-        console.log(`Tracking: event ${event} (${JSON.stringify(args)})`)
+        console.log(`Tracking: ${event} (${JSON.stringify(args)})`)
     }
 }
