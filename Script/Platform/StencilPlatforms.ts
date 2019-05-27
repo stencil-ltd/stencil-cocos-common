@@ -7,4 +7,8 @@ export default class StencilPlatforms {
     public static isIos() {
         return cc.sys.platform == cc.sys.IPHONE
     }
+
+    public static isPreview() {
+        return CC_PREVIEW
+    }
 }
