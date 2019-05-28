@@ -17,7 +17,7 @@ export abstract class StateGate<T> extends ActiveGate implements Keyable {
 
     abstract states: T[] = []
 
-    public machine: StateMachine<T>
+    public machine: StateMachine<T> = null
 
     private revertState: T | null = null
 
