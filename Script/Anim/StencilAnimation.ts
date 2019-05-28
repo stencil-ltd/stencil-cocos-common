@@ -19,7 +19,8 @@ export default class StencilAnimation extends cc.Component {
     }
 
     protected onEnable(): void {
-        const clip = this.getClip();
+        const clip = this.getClip()
+        if (!clip) return
         if (this.restartOnAwake) {
             this._anim.play(clip.name, 0)
         }
