@@ -4,7 +4,7 @@ import StencilNative from "./StencilNative";
 
 export default class NativeWrapper {
 
-    public static withClasses(ios: string, android: string) {
+    public static withClasses(ios: string|null, android: string|null) {
         return new NativeWrapper(new PlatformSwitch<string>().withIos(ios).withAndroid(android))
     }
 
@@ -71,9 +71,11 @@ export class NativeMethod {
 
     public call(...args: any[]): any {
         if (StencilPlatforms.isAndroid()) {
+            if (!this._androidClass()) return
             return StencilNative.callJava(this._androidClass(), this.name, this._androidSignature(), ...args)
         }
         if (StencilPlatforms.isIos()) {
+            if (!this._iosName()) return
             return StencilNative.callIos(this.klass, this._iosName(), ...args)
         }
     }

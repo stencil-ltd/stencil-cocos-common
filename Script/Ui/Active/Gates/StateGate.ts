@@ -5,9 +5,6 @@ import StateMachine from "../../../State/StateMachine";
 import {StateChange} from "../../../State/StateChange";
 
 import {ActiveGate} from "../ActiveGate";
-
-const {ccclass} = cc._decorator;
-
 export abstract class StateGate<T> extends ActiveGate implements Keyable {
 
     @property key: string = ""
