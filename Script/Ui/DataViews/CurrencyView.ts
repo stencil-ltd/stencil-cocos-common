@@ -9,26 +9,26 @@ export default abstract class CurrencyView extends cc.Component {
     @property
     key: string = ''
 
-    protected source: Currency = null
+    public currency: Currency = null
 
     protected update(dt: number): void {
-        if (!this.source) {
-            this.source = CurrencyManager.instance().get(this.key)
-            if (!this.source) return
-            this.source.subscribe(this, this.onChange)
+        if (!this.currency) {
+            this.currency = CurrencyManager.instance().get(this.key)
+            if (!this.currency) return
+            this.currency.subscribe(this, this.onChange)
             this.onInitialize()
             this.onChange()
         }
     }
 
     onDestroy(): void {
-        if (!this.source) return
-        this.source.unsubscribe(this)
+        if (!this.currency) return
+        this.currency.unsubscribe(this)
     }
 
     public amount(): number|null {
-        if (!this.source) return null
-        return this.source.amount()
+        if (!this.currency) return null
+        return this.currency.amount()
     }
 
     protected onInitialize() {}
