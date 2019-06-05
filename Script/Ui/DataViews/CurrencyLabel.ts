@@ -3,6 +3,8 @@ import CurrencyView from "./CurrencyView";
 import requireComponent = cc._decorator.requireComponent;
 import Label = cc.Label;
 import property = cc._decorator.property;
+import Subscription from "../../Foundation/Subscription";
+import Currency from "../../Economy/Currency";
 
 const {ccclass} = cc._decorator;
 
