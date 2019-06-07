@@ -105,10 +105,14 @@ export namespace Stencil {
             priceValue?: number
             title?: string
             description?: string
+            payouts?: {
+                amount: number
+                kind: string
+            }[]
         }
 
         export interface IapConfigPlatform {
-            key: string
+            key?: string
             items: { [s: string]: IapConfigItem }
         }
     }

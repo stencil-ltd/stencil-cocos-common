@@ -4,6 +4,7 @@ export default class StencilNative {
                            methodName: string,
                            ...parameters: any[])
     {
+        console.log(`StencilNative: ${className}.${methodName} -> [${parameters.join(', ')}]`)
         return jsb.reflection.callStaticMethod(className, methodName, ...parameters)
     }
 
@@ -12,6 +13,7 @@ export default class StencilNative {
                        methodSignature: string,
                        ...parameters: any[])
     {
+        console.log(`StencilNative: ${className}.${methodName}${methodSignature} -> [${parameters.join(', ')}]`)
         return jsb.reflection.callStaticMethod(className, methodName, methodSignature, ...parameters)
     }
 

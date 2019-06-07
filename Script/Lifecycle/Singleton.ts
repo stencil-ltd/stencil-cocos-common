@@ -5,6 +5,8 @@ export default abstract class Singleton extends cc.Component {
         return this.map.get(ctor) as T
     }
 
+    protected loaded: boolean
+
     protected onLoad(): void {
         if (Singleton.get(this.constructor)) {
             cc.log(`Singleton: existing instance of ${this.constructor.name}.`)
@@ -14,6 +16,7 @@ export default abstract class Singleton extends cc.Component {
         cc.log(`Singleton: No existing instance of ${this.constructor.name}. Initializing.`)
         Singleton.map.set(this.constructor, this)
         cc.game.addPersistRootNode(this.node)
+        this.loaded = true
         this.onSingletonLoad()
     }
 

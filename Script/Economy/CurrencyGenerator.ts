@@ -4,18 +4,19 @@ import Currency from "./Currency";
 import Controller from "../Lifecycle/Controller";
 import CurrencyManager from "./CurrencyManager";
 import Component = cc.Component;
+import StencilStorage from "../Storage/StencilStorage";
 
 const {ccclass} = cc._decorator;
 
 @ccclass
-@menu("Stencil/Econ/ CurrencyGenerator")
+@menu("Stencil/Econ/CurrencyGenerator")
 export default class CurrencyGenerator extends Component {
 
     @property()
     public key: string = ''
 
     @property()
-    public seconds: number = 30 * 60
+    public seconds: number = 3600 // 1 hour
 
     @property()
     public amount: number = 1
@@ -27,24 +28,28 @@ export default class CurrencyGenerator extends Component {
      * time in milliseconds
      */
     public timeRemaining(): number {
-        const mark = this.getMark() || new Date()
-        const now = new Date()
-        const next = new Date(mark.valueOf() + this.seconds*1000)
-        return next.valueOf() - now.valueOf()
+        return this.next().valueOf() - Date.now()
+    }
+
+    public next(): Date {
+        return new Date(this.getMark().valueOf() + this.seconds*1000)
     }
 
     private getKey(): string {
         return `__currency_generate_mark_${this.key}`
     }
 
-    private getMark(): Date|null {
-        const str = cc.sys.localStorage.getItem(this.getKey()) as string
-        if (!str) return null
-        return new Date(str)
+    private getMark(): Date {
+        let mark = StencilStorage.default.getDateTime(this.getKey())
+        if (!mark) {
+            mark = new Date()
+            this.setMark(mark)
+        }
+        return mark
     }
 
     private setMark(date: Date) {
-        cc.sys.localStorage.setItem(this.getKey(), `${Date.now()}`)
+        StencilStorage.default.setDateTime(this.getKey(), date)
     }
 
     protected onLoad(): void {
@@ -59,10 +64,9 @@ export default class CurrencyGenerator extends Component {
     }
 
     private _onTick() {
-        const remaining = this.timeRemaining()
-        if (remaining <= 0) {
-            this.setMark(new Date())
-            this._currency.add(this.amount).save()
+        while (this.timeRemaining() <= 0) {
+            this.setMark(this.next())
+            this._currency.add(this.amount).andSave()
         }
     }
 
