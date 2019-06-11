@@ -4,6 +4,7 @@ import property = cc._decorator.property;
 import PromiseWrapper from "../../Foundation/PromiseWrapper";
 import RichText = cc.RichText;
 import Label = cc.Label;
+import StencilText from "../../Foundation/StencilText";
 
 const {ccclass} = cc._decorator;
 
@@ -18,6 +19,7 @@ export default class TypewriterLabel extends cc.Component {
     private _label: Label
     private _text: string = ""
     private _length: number = 0
+    private _boundaries: number[] = []
 
     private _promise: PromiseWrapper<string>
 
@@ -40,14 +42,20 @@ export default class TypewriterLabel extends cc.Component {
         if (this._promise && !this._promise.isFinished()) {
             this._promise.reject(text)
         }
+        // text = text.replace(/ /g, ' \u200B\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u200B')
         this._text = text
         this._length = 0
+        this._boundaries = []
         this._promise = new PromiseWrapper<string>()
+        this._boundaries = StencilText.getIndicesOf(' ', text, false)
+
+        console.log(`Boundaries: ${this._boundaries}`)
         return this.await()
     }
 
     private refresh() {
-        this._label.string = this._text.substr(0, Math.floor(this._length)).padEnd(this._text.length, ' ')
+        const short = Math.floor(this._length)
+        this._label.string = this._text.substr(0, short)
         if (!this._promise.isFinished() && this._label.string == this._text) {
             this._promise.resolve(this._text)
         }
