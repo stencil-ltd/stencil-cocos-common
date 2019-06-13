@@ -1,5 +1,7 @@
 import CurrencySpec from "./CurrencySpec";
 import Currency from "./Currency";
+import CurrencyPersistence from "./Persistence/CurrencyPersistence";
+import LocalCurrencyPersistence from "./Persistence/LocalCurrencyPersistence";
 
 export default class CurrencyManager {
 
@@ -7,8 +9,26 @@ export default class CurrencyManager {
     public static instance() { return this._instance; }
 
     private readonly _map = new Map<string, Currency>()
+    private _persistence: CurrencyPersistence = new LocalCurrencyPersistence('__currencies/default')
+    private _init = false
+
+    public isReady(): boolean {
+        return this._persistence.isReady()
+    }
+
+    public async onReady() {
+        await this._persistence.onReady()
+    }
+
+    public initialize(persistence?: CurrencyPersistence) {
+        this._init = true
+        this._persistence = persistence || this._persistence
+    }
 
     public register(spec: CurrencySpec): Currency {
+        if (!this._init) {
+            console.error(`CurrencyManager not initialized. Consider calling initialize.`)
+        }
         const retval = this.generate(spec)
         this.load(retval)
         this._map.set(spec.key, retval)
@@ -23,9 +43,8 @@ export default class CurrencyManager {
         return new Currency(this, spec)
     }
 
-    public save(currency: Currency) {
-        const key = `__currencies/default/${currency.key}`
-        cc.sys.localStorage.setItem(key, JSON.stringify(currency.serialize()))
+    public async save(currency: Currency) {
+        await this._persistence.save(currency.key, currency.serialize())
     }
 
     public clear() {
@@ -34,11 +53,10 @@ export default class CurrencyManager {
         })
     }
 
-    private load(currency: Currency) {
-        const key = `__currencies/default/${currency.key}`
-        const saved = cc.sys.localStorage.getItem(key)
-        if (saved) {
-            currency.initialize(JSON.parse(saved))
+    private async load(currency: Currency) {
+        const loaded = await this._persistence.load(currency.key)
+        if (loaded) {
+            currency.initialize(loaded)
         }
     }
 }

@@ -11,14 +11,25 @@ export default abstract class CurrencyView extends cc.Component implements Subsc
     @property
     key: string = ''
 
-    public currency: Currency = null
+    @property()
+    markOnAwake: boolean = false
+
+    private currency: Currency = null
 
     private _sub = new Subscription<Currency>()
+    private _marked = 0
+
+    public revert() {
+        if (this.currency) {
+            this.currency.set(this._marked)
+        }
+    }
 
     protected update(dt: number): void {
         if (!this.currency) {
             this.currency = CurrencyManager.instance().get(this.key)
             if (!this.currency) return
+            if (this.markOnAwake) this._marked = this.currency.amount()
             this.currency.subscribe(this, this._onChange)
             this.onInitialize()
             this._onChange()
@@ -40,7 +51,7 @@ export default abstract class CurrencyView extends cc.Component implements Subsc
 
     public amount(): number|null {
         if (!this.currency) return null
-        return this.currency.amount()
+        return this.currency.amount() - this._marked
     }
 
     protected onInitialize() {}
