@@ -6,6 +6,10 @@ export default class DataSources {
 
     private lookup = new Map<string, DataSource<any>>()
 
+    public save = () => {
+        console.log(`Dummy Save. Replace with your own.`)
+    }
+
     public register(source: DataSource<any>) {
         const key = source.key.toLowerCase()
         if (this.lookup.has(key)) {
