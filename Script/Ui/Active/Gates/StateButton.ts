@@ -1,5 +1,6 @@
 import property = cc._decorator.property;
 import StateMachine from "../../../State/StateMachine";
+import StencilEnum from "../../../Foundation/StencilEnum";
 
 export abstract class StateButton<T> extends cc.Component {
 
