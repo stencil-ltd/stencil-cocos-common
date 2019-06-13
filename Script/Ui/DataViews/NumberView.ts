@@ -10,8 +10,8 @@ export class NumberView extends NumberBaseView {
 
     private label: Label = null
 
-    start() {
-        this.label = this.node.getComponent(cc.Label)
+    protected onLoad(): void {
+        this.label = this.label || this.node.getComponent(cc.Label)
         this.label.string = ''
     }
 
