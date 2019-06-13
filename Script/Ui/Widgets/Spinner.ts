@@ -14,6 +14,6 @@ export default class Spinner extends cc.Component {
     clockwise: boolean = true
 
     protected start() {
-        this.node.runAction(cc.rotateBy(this.duration, this.clockwise ? -360 : 360).repeatForever())
+        this.node.runAction(cc.rotateBy(this.duration, this.clockwise ? 360 : -360).repeatForever())
     }
 }
