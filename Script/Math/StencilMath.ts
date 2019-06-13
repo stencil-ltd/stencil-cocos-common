@@ -10,9 +10,14 @@ export function degrees(rads: number): number {
 
 export class StencilMath {
 
-  // min and max included
-  public static random(min: number, max: number): number {
-    return Math.floor(Math.random()*(max-min+1)+min);
+  // [min, max)
+  public static randomInt(min: number, max: number): number {
+    return Math.floor(this.randomFloat(min, max))
+  }
+
+  public static randomFloat(min: number, max: number): number {
+    const range = max - min
+    return min + (Math.random() * range)
   }
 
   public static clamp(val: number, min: number, max: number): number {
