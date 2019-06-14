@@ -12,4 +12,29 @@ export default class StencilNode {
         return null
     }
 
+    public static changeParent(node: Node, newParent: Node) {
+        if(node.parent == newParent) return;
+        const getWorldRotation = function (node) {
+            let currNode = node;
+            let resultRot = currNode.rotation;
+            do {
+                currNode = currNode.parent;
+                resultRot += currNode.rotation;
+            } while (currNode.parent != null);
+            resultRot = resultRot % 360;
+            return resultRot;
+        };
+
+        const oldWorRot = getWorldRotation(node);
+        const newParentWorRot = getWorldRotation(newParent);
+        const newLocRot = oldWorRot - newParentWorRot;
+
+        const oldWorPos = node.convertToWorldSpaceAR(cc.p(0, 0));
+        const newLocPos = newParent.convertToNodeSpaceAR(oldWorPos);
+
+        node.parent = newParent;
+        node.position = newLocPos;
+        node.rotation = newLocRot;
+    }
+
 }
