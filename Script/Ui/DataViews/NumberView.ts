@@ -13,6 +13,9 @@ export class NumberView extends NumberBaseView {
     prefix: string = ''
 
     @property()
+    duration: number = 0.7
+
+    @property()
     animate: boolean = true
 
     private _label: Label
@@ -52,7 +55,7 @@ export class NumberView extends NumberBaseView {
         this._goal = {
             start: this._amount,
             begin: Date.now(),
-            duration: 1000,
+            duration: this.duration * 1000,
             amount: amount
         }
     }

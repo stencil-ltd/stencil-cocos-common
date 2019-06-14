@@ -25,11 +25,17 @@ export default abstract class CurrencyView extends cc.Component implements Subsc
         }
     }
 
+    public mark(notify: boolean = true) {
+        if (!this.currency) return
+        this._marked = this.currency.amount()
+        if (notify) this._onChange()
+    }
+
     protected update(dt: number): void {
         if (!this.currency) {
             this.currency = CurrencyManager.instance().get(this.key)
             if (!this.currency) return
-            if (this.markOnAwake) this._marked = this.currency.amount()
+            if (this.markOnAwake) this.mark(false)
             this.currency.subscribe(this, this._onChange)
             this.onInitialize()
             this._onChange()
