@@ -49,7 +49,7 @@ export class StencilIap {
             sdkbox.IAP.setListener(this.listener)
         }
 
-        console.log(`Attempting to load config: ${config}`)
+        console.log(`Attempting to load config: ${JSON.stringify(config)}`)
         this._init(IapConversion.convert(config))
         return available
     }
