@@ -11,7 +11,15 @@ export default abstract class DataView<T> extends cc.Component {
 
     protected source: DataSource<T> = null
 
+    protected onEnable(): void {
+        this.tryInit()
+    }
+
     protected update(dt: number): void {
+        this.tryInit()
+    }
+
+    private tryInit() {
         if (!this.source) {
             this.source = DataSources.instance.get(this.key)
             if (!this.source) return
