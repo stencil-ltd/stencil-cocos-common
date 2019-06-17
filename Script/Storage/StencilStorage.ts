@@ -38,6 +38,15 @@ export default class StencilStorage {
         this._strategy.setInt(key, value)
     }
 
+    getBoolean(key: string, def: boolean = false): boolean {
+        const intdef = def ? 1 : 0
+        return this._strategy.getInt(key, intdef) != 0
+    }
+
+    setBoolean(key: string, value: boolean) {
+        this._strategy.setInt(key, value ? 1 : 0)
+    }
+
     getDateTime(key: string): Date|null {
         var str = this.getString(key)
         if (!str) return null

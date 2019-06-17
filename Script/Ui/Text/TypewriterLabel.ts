@@ -38,7 +38,7 @@ export default class TypewriterLabel extends cc.Component {
     }
 
     setText(text: string): Promise<string> {
-        console.log(`Typewriter: set text to ${text}`)
+        console.log(`Typewriter: set text to '${text}'`)
         if (this._promise && !this._promise.isFinished()) {
             this._promise.reject(text)
         }
