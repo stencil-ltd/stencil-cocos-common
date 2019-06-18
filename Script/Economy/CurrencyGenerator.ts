@@ -21,18 +21,27 @@ export default class CurrencyGenerator extends Component {
     @property()
     public amount: number = 1
 
+    @property()
+    public max: number = 0
+
     private _currency: Currency
     private _fn: Function
 
     /**
      * time in milliseconds
      */
-    public timeRemaining(): number {
+    public timeRemaining(): number|null {
+        if (this.isMaxed()) return null
         return this.next().valueOf() - Date.now()
     }
 
-    public next(): Date {
+    public next(): Date|null {
+        if (this.isMaxed()) return null
         return new Date(this.getMark().valueOf() + this.seconds*1000)
+    }
+
+    private isMaxed(): boolean {
+        return this.max && this._currency.amount() >= this.max
     }
 
     private getKey(): string {
@@ -63,14 +72,18 @@ export default class CurrencyGenerator extends Component {
         this.schedule(this._fn, 1.0, cc.macro.REPEAT_FOREVER)
     }
 
+    protected onDisable(): void {
+        this.unschedule(this._fn)
+    }
+
     private _onTick() {
+        if (this.isMaxed()) {
+            this.setMark(null)
+            return
+        }
         while (this.timeRemaining() <= 0) {
             this.setMark(this.next())
             this._currency.add(this.amount).andSave()
         }
-    }
-
-    protected onDisable(): void {
-        this.unschedule(this._fn)
     }
 }
