@@ -1,3 +1,7 @@
+export function deepCopy<T>(obj: T): T {
+    return JSON.parse(JSON.stringify(obj))
+}
+
 export function sleepSeconds(seconds: number): Promise<any> {
     return sleepMs(seconds * 1000)
 }
