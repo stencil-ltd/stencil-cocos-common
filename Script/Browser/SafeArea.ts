@@ -10,8 +10,8 @@ export default class SafeArea {
     public static getSafeArea(): Rect {
         let x = 0
         let y = 0
-        let width = cc.game.canvas.width
-        let height = cc.game.canvas.height
+        let width = cc.view.getFrameSize().width
+        let height = cc.view.getFrameSize().height
         if (CSS.supports('padding-left: constant(safe-area-inset-left)')) {
             const div = document.createElement('div')
             document.body.appendChild(div)
