@@ -2,12 +2,27 @@ export default class StencilJs {
 
     public static loadScript(url: string): Promise<any> {
         return new Promise((resolve) => {
+            const head  = document.getElementsByTagName('head')[0]
             const scriptTag = document.createElement('script')
             scriptTag.onload = ev => {
                 resolve(null)
             }
             scriptTag.src = url
-            document.appendChild(scriptTag)
+            head.appendChild(scriptTag)
+        })
+    }
+
+    public static loadCSS(url: string): Promise<any> {
+        return new Promise((resolve) => {
+            const head  = document.getElementsByTagName('head')[0]
+            const link = document.createElement('link')
+            link.onload = ev => {
+                resolve(null)
+            }
+            link.type = 'text/css'
+            link.rel = 'stylesheet'
+            link.href = url
+            head.appendChild(link)
         })
     }
 
