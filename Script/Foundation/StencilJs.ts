@@ -1,3 +1,18 @@
+export default class StencilJs {
+
+    public static loadScript(url: string): Promise<any> {
+        return new Promise((resolve) => {
+            const scriptTag = document.createElement('script')
+            scriptTag.onload = ev => {
+                resolve(null)
+            }
+            scriptTag.src = url
+            document.appendChild(scriptTag)
+        })
+    }
+
+}
+
 export function deepCopy<T>(obj: T): T {
     return JSON.parse(JSON.stringify(obj))
 }
