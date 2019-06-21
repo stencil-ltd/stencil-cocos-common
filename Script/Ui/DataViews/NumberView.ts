@@ -18,7 +18,7 @@ export class NumberView extends NumberBaseView {
     @property()
     animate: boolean = true
 
-    private _label: Label
+    private _label: Label = null
     private _amount: number = null
     private _goal = null
 

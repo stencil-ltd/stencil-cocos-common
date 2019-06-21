@@ -1,10 +1,12 @@
 export default class StencilJs {
 
     public static loadScript(url: string): Promise<any> {
+        console.log(`Attempt to load ${url}`)
         return new Promise((resolve) => {
             const head  = document.getElementsByTagName('head')[0]
             const scriptTag = document.createElement('script')
             scriptTag.onload = ev => {
+                console.log(`Resolve ${url}`)
                 resolve(null)
             }
             scriptTag.src = url
@@ -13,10 +15,12 @@ export default class StencilJs {
     }
 
     public static loadCSS(url: string): Promise<any> {
+        console.log(`Attempt to load ${url}`)
         return new Promise((resolve) => {
             const head  = document.getElementsByTagName('head')[0]
             const link = document.createElement('link')
             link.onload = ev => {
+                console.log(`Resolve ${url}`)
                 resolve(null)
             }
             link.type = 'text/css'

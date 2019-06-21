@@ -9,7 +9,7 @@ const {ccclass} = cc._decorator;
 @menu("Stencil/Audio/BackgroundMusic")
 export default class BackgroundMusic extends Singleton {
 
-    @property(AudioClip)
+    @property({type: AudioClip})
     music: AudioClip = null
 
     protected onSingletonLoad() {

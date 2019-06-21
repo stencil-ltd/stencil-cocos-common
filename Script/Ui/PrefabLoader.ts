@@ -10,7 +10,7 @@ const {ccclass} = cc._decorator;
 export default class PrefabLoader extends RegisterableComponent {
 
     @property(Prefab)
-    prefab: Prefab
+    prefab: Prefab = null
 
     onRegister() {
         super.onRegister();

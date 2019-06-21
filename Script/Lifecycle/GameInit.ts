@@ -1,6 +1,6 @@
-const {ccclass} = cc._decorator;
+import ccclass = cc._decorator.ccclass;
 
-@ccclass
+@ccclass()
 export default abstract class GameInit extends cc.Component {
 
     protected start(): void {
