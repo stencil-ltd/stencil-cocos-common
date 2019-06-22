@@ -30,11 +30,11 @@ export default class StencilStorage {
         this._strategy.setString(key, value)
     }
 
-    getInt(key: string, def: number = 0): number {
+    getNumber(key: string, def: number = 0): number {
         return this._strategy.getInt(key, def)
     }
 
-    setInt(key: string, value: number) {
+    setNumber(key: string, value: number) {
         this._strategy.setInt(key, value)
     }
 
@@ -69,5 +69,34 @@ export default class StencilStorage {
             this.remove(key)
         else
             this.setString(key, StencilDates.dayFormat(value))
+    }
+
+    getObject<T>(key: string): T|null {
+        const json = this.getString(key)
+        if (!json) return null
+        return JSON.parse(json) as T
+    }
+
+    setObject<T>(key: string, value: T|null) {
+        if (!value)
+            this.remove(key)
+        else
+            this.setString(key, JSON.stringify(value))
+    }
+
+    /**
+     * Deprecated, please use {@link getNumber}
+     * @deprecated
+     */
+    getInt(key: string, def: number = 0): number {
+        return this.getNumber(key, def)
+    }
+
+    /**
+     * Deprecated, please use {@link setNumber}
+     * @deprecated
+     */
+    setInt(key: string, value: number) {
+        this.setNumber(key, value)
     }
 }
