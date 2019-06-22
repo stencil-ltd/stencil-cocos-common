@@ -14,6 +14,6 @@ export default class BackgroundMusic extends Singleton {
 
     protected onSingletonLoad() {
         super.onSingletonLoad();
-        cc.audioEngine.playEffect(this.music, true)
+        cc.audioEngine.playMusic(this.music, true)
     }
 }
