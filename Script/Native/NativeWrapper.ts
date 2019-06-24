@@ -69,13 +69,22 @@ export class NativeMethod {
         return name
     }
 
-    public call(...args: any[]): any {
+    public canCall() {
         if (StencilPlatforms.isAndroid()) {
-            if (!this._androidClass()) return
+            return !!this._androidClass()
+        }
+        if (StencilPlatforms.isIos()) {
+            return !!this._iosName()
+        }
+        return false
+    }
+
+    public call(...args: any[]): any {
+        if (!this.canCall()) return
+        if (StencilPlatforms.isAndroid()) {
             return StencilNative.callJava(this._androidClass(), this.name, this._androidSignature(), ...args)
         }
         if (StencilPlatforms.isIos()) {
-            if (!this._iosName()) return
             return StencilNative.callIos(this.klass, this._iosName(), ...args)
         }
     }
