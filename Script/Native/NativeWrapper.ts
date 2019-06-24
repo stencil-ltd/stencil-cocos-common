@@ -51,7 +51,7 @@ export class NativeMethod {
     }
 
     public _androidClass(): string {
-        return this.klass.replace(new RegExp('\\.', 'g'), '/');
+        return this.klass && this.klass.replace(new RegExp('\\.', 'g'), '/');
     }
 
     public _iosName(): string {
