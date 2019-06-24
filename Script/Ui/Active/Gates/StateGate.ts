@@ -35,7 +35,7 @@ export abstract class StateGate<T> extends ActiveGate implements Keyable {
     }
 
     onUnregister() {
-        this.machine.unsubscribe(this)
+        this.machine && this.machine.unsubscribe(this)
     }
 
     protected onEnable(): void {

@@ -28,6 +28,13 @@ export default class CurrencyLabel extends CurrencyView {
         this._label = this.getComponent(Label)
     }
 
+    protected onEnable(): void {
+        if (this._goal) {
+            this._amount = this._goal.amount
+            this._goal = null
+        }
+    }
+
     protected update(dt: number): void {
         super.update(dt);
         if (this._goal == null) return

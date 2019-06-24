@@ -19,6 +19,10 @@ export default class StencilPlatforms {
         return cc.sys.platform == cc.sys.IPHONE
     }
 
+    public static isMobileBrowser() {
+        return cc.sys.platform == cc.sys.MOBILE_BROWSER
+    }
+
     public static isPreview() {
         return CC_PREVIEW
     }
