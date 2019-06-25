@@ -103,10 +103,20 @@ export class StencilIap {
     }
 
     public static getProducts(): Product[] {
+        const fake = this.fakeProducts()
         if (!this.isAvailable) {
-            return this.fakeProducts() as Product[]
+            return fake as Product[]
         }
-        return sdkbox.IAP.getProducts() as Product[]
+        const map = new Map<string, Product>()
+        fake.forEach(value => {
+            map[value.id] = value
+        })
+        const basic = sdkbox.IAP.getProducts() as Product[]
+        return basic.map(value => {
+            const fakeproduct = map.get(value.id)
+            if (!fakeproduct) return value
+            return Object.assign(fakeproduct, value)
+        })
     }
 
     public static scrubbedTitle(product: Product): string {
