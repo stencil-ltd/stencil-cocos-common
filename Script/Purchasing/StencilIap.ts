@@ -1,19 +1,19 @@
 import {Stencil} from "./SdkBoxIap";
+import {ListenWrapper} from "./ListenWrapper";
+import IapConversion, {IapSimpleConfig} from "./IapConversion";
 import IapPlatform = Stencil.Purchasing.IapPlatform;
 import ProductListener = Stencil.Purchasing.ProductListener;
 import IapConfig = Stencil.Purchasing.IapConfig;
 import IapConfigItem = Stencil.Purchasing.IapConfigItem;
 import Product = Stencil.Purchasing.Product;
-import {ListenWrapper} from "./ListenWrapper";
-import IapConversion, {IapSimpleConfig} from "./IapConversion";
 
 export class StencilIap {
 
     public static testPlatform: IapPlatform = IapPlatform.ios
 
     private static listener = new ListenWrapper()
-    private static config: IapConfig = null
     private static simple: IapSimpleConfig = null
+    private static config: IapConfig = null
 
     public static isAvailable: boolean = false
 
@@ -31,8 +31,16 @@ export class StencilIap {
      * @param listener - provide a single listener for all emitted IAP events.
      * @return true if IAP is available and successfully initialized.
      */
-    public static init(config: IapSimpleConfig, listener: ProductListener): boolean {
+    public static initSimple(config: IapSimpleConfig, listener: ProductListener): boolean {
         this.simple = config
+        return this.initClassic(IapConversion.convert(config), listener)
+    }
+
+    public static initDefault(listener: ProductListener): boolean {
+        return this.initClassic(null, listener)
+    }
+
+    public static initClassic(config: IapConfig|null, listener: ProductListener): boolean {
         this.addListener(listener)
 
         let available = true
@@ -49,8 +57,7 @@ export class StencilIap {
             sdkbox.IAP.setListener(this.listener)
         }
 
-        console.log(`Attempting to load config: ${JSON.stringify(config)}`)
-        this._init(IapConversion.convert(config))
+        this._init(config)
         return available
     }
 
@@ -71,12 +78,16 @@ export class StencilIap {
         return retval
     }
 
-    private static _init(config: IapConfig) {
-        const available = this.isAvailable
-        this.config = config
-        if (available) {
+    private static _init(config: IapConfig|null) {
+        if (this.isAvailable) {
             console.log(`SDKBox available. Initializing with file.`)
-            sdkbox.IAP.init(config)
+            if (config) {
+                sdkbox.IAP.init(config)
+            } else {
+                // @ts-ignore
+                sdkbox.IAP.init()
+            }
+
         }
         console.log(`StencilIap configured.`)
         this.refresh()
@@ -103,20 +114,27 @@ export class StencilIap {
     }
 
     public static getProducts(): Product[] {
+        console.log(`Get Products...`)
         const fake = this.fakeProducts()
         if (!this.isAvailable) {
+            console.log(`IAP Unavailable. Returning Fake Products.`)
             return fake as Product[]
         }
+        console.log(`Constructing final product map...`)
         const map = new Map<string, Product>()
         fake.forEach(value => {
             map[value.id] = value
         })
+        console.log(`Fetching real products...`)
         const basic = sdkbox.IAP.getProducts() as Product[]
-        return basic.map(value => {
+        console.log(`Merging product lists...`)
+        const retval = basic.map(value => {
             const fakeproduct = map.get(value.id)
             if (!fakeproduct) return value
             return Object.assign(fakeproduct, value)
         })
+        console.log(`Products ready! ${retval.length} entries.`)
+        return retval
     }
 
     public static scrubbedTitle(product: Product): string {
@@ -144,9 +162,10 @@ export class StencilIap {
 
     private static fakeProducts(): IapConfigItem[] {
         const retval: IapConfigItem[] = []
-        if (this.testPlatform && this.config) {
+        const platform = this.platform()
+        if (platform && this.config) {
             let values = {}
-            switch (this.testPlatform) {
+            switch (platform ) {
                 case IapPlatform.ios:
                     console.log(`Using fake products for iOS`)
                     values = this.config.ios.iap.items
@@ -178,5 +197,15 @@ export class StencilIap {
             priceValue: priceValue,
             price: item.price || `$${priceValue}`
         }
+    }
+
+    private static platform(): IapPlatform {
+        switch (cc.sys.platform) {
+            case cc.sys.ANDROID:
+                return IapPlatform.android
+            case cc.sys.IPHONE:
+            case cc.sys.IPAD:
+                return IapPlatform.ios
+        }return this.testPlatform
     }
 }
