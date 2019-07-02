@@ -27,16 +27,12 @@ export class StencilIap {
 
     /**
      * Initialize Stencil's IAP wrapper. Good on you.
-     * @param config - a path to config file in resources. If null, it will use the default location-- but prevents testing in browser/simulator.
+     * @param config - while the product list is pulled from resources, you should provide a full catalog with payouts as well.
      * @param listener - provide a single listener for all emitted IAP events.
      * @return true if IAP is available and successfully initialized.
      */
     public static initSimple(config: IapSimpleConfig, listener: ProductListener): boolean {
         this.simple = config
-        return this.initClassic(IapConversion.convert(config), listener)
-    }
-
-    public static initDefault(listener: ProductListener): boolean {
         return this.initClassic(null, listener)
     }
 
