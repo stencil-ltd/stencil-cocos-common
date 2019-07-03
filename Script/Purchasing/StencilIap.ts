@@ -157,7 +157,7 @@ export class StencilIap {
     }
 
     private static fakeProducts(): IapConfigItem[] {
-        const retval: IapConfigItem[] = []
+        let retval: IapConfigItem[] = []
         const platform = this.platform()
         if (platform && this.config) {
             let values = {}
@@ -178,6 +178,8 @@ export class StencilIap {
             items.forEach(value => {
                 retval.push(this.createFakeProduct(value))
             })
+        } else {
+            retval = this.simple.items
         }
         return retval
     }
