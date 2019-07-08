@@ -5,17 +5,14 @@ import requireComponent = cc._decorator.requireComponent;
 import Widget = cc.Widget;
 import Controller from "../Lifecycle/Controller";
 import StencilPlatforms from "../Platform/StencilPlatforms";
+import Component = cc.Component;
 
 const {ccclass} = cc._decorator;
 
 @ccclass
 @requireComponent(Widget)
 @menu("Stencil/Ui/SafeArea")
-export default class SafeArea extends Controller {
-
-    public static instance(): SafeArea {
-        return Controller.get(SafeArea)
-    }
+export default class SafeArea extends Component {
 
     /**
      * Thanks QuirksMode!
@@ -65,7 +62,6 @@ export default class SafeArea extends Controller {
     }
 
     protected onLoad(): void {
-        super.onLoad()
         const widget = this.getComponent(Widget)
         const safe = this.safeArea()
         const vis = this.fullArea()
