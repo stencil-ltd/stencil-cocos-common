@@ -43,7 +43,7 @@ export default class TypewriterLabel extends cc.Component {
             this._promise.reject(text)
         }
         // text = text.replace(/ /g, ' \u200B\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u200B')
-        this._text = text
+        this._text = text || ''
         this._length = 0
         this._boundaries = []
         this._promise = new PromiseWrapper<string>()
