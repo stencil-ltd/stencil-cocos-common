@@ -41,8 +41,8 @@ export default class TypewriterLabel extends cc.Component {
         if (!this.node.activeInHierarchy) return false
         if (!this._text) return false
         if (!this._promise || this._promise.isFinished()) return false
+        this._length = this._text.length
         this._label.string = this._text
-        this._promise.resolve(this._text)
         return true
     }
 
