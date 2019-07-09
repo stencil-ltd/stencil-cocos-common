@@ -38,6 +38,12 @@ export default class PromiseWrapper<T> {
             this._resolve = resolve
             this._reject = reject
         })
+
+        this.promise.then(value1 => {
+            this._isResolved = true
+        }).catch((e) => {
+            this._isRejected = true
+        })
     }
 
     public resolve(value?: T | PromiseLike<T>) {
