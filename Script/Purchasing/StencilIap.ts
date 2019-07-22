@@ -99,6 +99,14 @@ export class StencilIap {
         }
     }
 
+    public static find(id: string) {
+        if (!this.isAvailable) {
+            console.log(`StencilIap Not Available`)
+            return this.createFakeProduct(this.fakeProducts().find(value => value.id === id))
+        }
+        return this.getProducts().find(value => value.id === id)
+    }
+
     public static purchase(id: string) {
         console.log(`Attempt purchase: ${id}`)
         if (!this.isAvailable) {
