@@ -8,7 +8,7 @@ export default class LobStyle {
     public static readonly standard = new LobStyle()
 
     @property()
-    duration: number = 0.4
+    duration: number = 0.5
 
     @property({type: cc.Enum(LobEasing)})
     easing: LobEasing = LobEasing.InOut

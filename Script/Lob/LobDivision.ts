@@ -11,6 +11,6 @@ export default class LobDivision {
     amountPerLob: number = 0.1
 
     @property()
-    interval: number = 0.1
+    interval: number = 0.3
 
 }
