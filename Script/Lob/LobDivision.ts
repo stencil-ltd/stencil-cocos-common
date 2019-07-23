@@ -1,7 +1,7 @@
 import ccclass = cc._decorator.ccclass;
 import property = cc._decorator.property;
 
-@ccclass()
+@ccclass("LobDivision")
 export default class LobDivision {
 
     @property()

@@ -2,7 +2,7 @@ import ccclass = cc._decorator.ccclass;
 import property = cc._decorator.property;
 import Prefab = cc.Prefab;
 
-@ccclass()
+@ccclass("LobParticles")
 export default class LobParticles {
 
     @property(Prefab)

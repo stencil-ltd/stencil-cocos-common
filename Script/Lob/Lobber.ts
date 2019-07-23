@@ -12,7 +12,7 @@ import {sleepSeconds} from "../Foundation/StencilJs";
 const {ccclass} = cc._decorator;
 
 @ccclass
-@menu("Stencil/Ui/Lobber")
+@menu("Stencil/Lobbers/Lobber")
 export default class Lobber extends cc.Component {
 
     public static activeCount: number = 0
@@ -92,6 +92,7 @@ export default class Lobber extends cc.Component {
         const parent = this.lobParent || this.node
         const position = parent.convertToNodeSpaceAR(to.parent.convertToWorldSpaceAR(to.position))
         const action = cc.moveTo(lob.style.duration, position)
+        lob.style.applyToAction(action)
         await lob.object.runAction(action).wait()
     }
 
