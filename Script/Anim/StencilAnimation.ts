@@ -12,17 +12,24 @@ export default class StencilAnimation extends cc.Component {
     @property()
     restartOnAwake: boolean = true
 
+    @property()
+    deactivateOnFinish: boolean = false
+
     private _anim: cc.Animation
 
     protected onLoad(): void {
         this._anim = this.getComponent(cc.Animation)
     }
 
-    protected onEnable(): void {
+    protected async onEnable() {
         const clip = this.getClip()
         if (!clip) return
         if (this.restartOnAwake) {
-            this._anim.play(clip.name, 0)
+            const state = this._anim.play(clip.name, 0)
+            if (this.deactivateOnFinish) {
+                await state.wait()
+                this.node.active = false
+            }
         }
     }
 
